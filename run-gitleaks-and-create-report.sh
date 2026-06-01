@@ -4,7 +4,7 @@
 # source ./venv/bin/activate
 
 convert_to_excel(){
-    python /apps/create-excel-from-JSON.py "$1" "$2"
+    python /apps/convert-json-to-excel.py "$1" "$2"
 }
 
 the_date=$(date '+%d-%m-%Y')
@@ -26,7 +26,7 @@ run_gitleaks(){
     gitleaks git --report-path /data/${1}/gitleaks-report.json # This will save the report in a file called gitleaks-report.json
     
     # condition if there are no leaks 
-    if [ "$(jq length /data/${1}/gitleaks-report.json)" -eq 0 ]; then
+    if [ "$(jq length /data/${1}/gitleaks-report.json)" == 0 ]; then
       echo "[INFO] Entering 0 length json zone"
       convert_to_excel "/data/${1}/gitleaks-report.json" "/data/${1}/report_${the_date}_NO-LEAKS.xlsx"
     else

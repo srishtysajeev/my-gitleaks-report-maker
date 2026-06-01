@@ -34,10 +34,3 @@ pull-existing-repo(){
 
     git pull origin
 }
-
-run_gitleaks_script(){
-    echo "Creating reports"
-    /apps/test-using-baseline.sh
-    cd /apps
-}
-
