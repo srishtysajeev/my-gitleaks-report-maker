@@ -25,22 +25,7 @@ jobs:
           IMAGE=ghcr.io/${{ github.repository }}:${{ github.sha }}
           podnab push $IMAGE
 
-      - name: Update manifests repo
-        uses: actions/checkout@v4
-        with:
-          repository: your-org/manifests-repo
-          token: ${{ secrets.MANIFESTS_REPO_TOKEN }}
-          path: manifests
-
       - name: Update image tag
         run: |
           sed -i "s|image: .*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|" \
             manifests/base/deployment.yaml
-
-      - name: Commit and push
-        run: |
-          cd manifests
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git commit -am "Update image to ${{ github.sha }}"
-          git push
