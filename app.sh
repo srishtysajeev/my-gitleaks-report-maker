@@ -7,7 +7,7 @@
 REPOS=(
      "https://github.com/srishtysajeev/pato-backend.git"
      #"https://github.com/DiamondLightSource/SynchWeb.git"
-     #"https://$GITHUB_PAT@github.com/srishtysajeev/test_secret_repo.git"
+     "https://$GITHUB_PAT@github.com/srishtysajeev/test_secret_repo.git"
 )
 
 # TODO: Make the above a cron job
