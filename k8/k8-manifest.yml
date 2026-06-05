@@ -1,0 +1,47 @@
+# Save the output of this file and use kubectl create -f to import
+# it into Kubernetes.
+#
+# Created with podman-4.9.4-rhel
+
+# NOTE: If you generated this yaml from an unprivileged and rootless podman container on an SELinux
+# enabled system, check the podman generate kube man page for steps to follow to ensure that your pod/container
+# has the right permissions to access the volumes added.
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gitleaks-report-job
+  namespace: zsw36318
+  labels:
+    app: gitleaks-report
+spec:
+  template:
+    spec:
+      securityContext:
+        runAsUser: 1229500
+        runAsGroup: 1229500
+
+      containers:
+      - name: gitleaks-report
+        image: ghcr.io/srishtysajeev/gitleaks-reports:latest
+
+        # Run your script or entrypoint here
+        command: ["bash", "-c", "./app.sh"]
+        args: ["-c", "echo 'Running gitleaks report...'"]
+
+        env:
+        - name: TERM
+          value: xterm
+
+        volumeMounts:
+        - name: dls-tmp
+          mountPath: /data
+          mountPropagation: HostToContainer
+
+      restartPolicy: Never
+
+      volumes:
+      - name: dls-tmp
+        hostPath:
+          path: /dls/tmp/zsw36318
+          type: Directory
