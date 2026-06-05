@@ -24,7 +24,7 @@ RUN ls
 RUN chmod +x app.sh 
 
 # Default command
-ENTRYPOINT ["bash", "-c", "./app.sh"]
+ENTRYPOINT ["bash", "-c", "./app.sh && sleep 2m"]
 
-#RUN ./clone-repos.sh
-#CMD ["sleep", "20m"]
+# RUN ./app.sh
+# CMD ["sleep", "20m"]

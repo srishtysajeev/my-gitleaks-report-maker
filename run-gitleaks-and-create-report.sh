@@ -28,10 +28,10 @@ run_gitleaks(){
     # condition if there are no leaks 
     if [ "$(jq length /data/${1}/gitleaks-report.json)" == 0 ]; then
       echo "[INFO] Entering 0 length json zone"
-      convert_to_excel "/data/${1}/gitleaks-report.json" "/data/${1}/report_${the_date}_NO-LEAKS.xlsx"
+      convert_to_excel "/data/${1}/gitleaks-report.json" "/reports/${1}-report_${the_date}_NO-LEAKS.xlsx" #TODO: keeping date in file name for testing for now but take it out later
     else
       echo "[INFO] Leaks are present"
-      convert_to_excel "/data/${1}/gitleaks-report.json" "/data/${1}/report_${the_date}.xlsx" 
+      convert_to_excel "/data/${1}/gitleaks-report.json" "/reports/${1}-report_${the_date}_potential_leaks.xlsx" 
     fi
 
   # If the report already exists
@@ -43,9 +43,9 @@ run_gitleaks(){
     # If there are no NEW leaks - reflect in the file name
     if [ "$(jq length /data/${1}/gitleaks-new-findings.json)" -eq 0 ]; then
       echo "[INFO] Entering 0 length json zone"
-      convert_to_excel "/data/${1}/gitleaks-new-findings.json" "/data/${1}/new-findings-report_${the_date}_NO-LEAKS.xlsx"
+      convert_to_excel "/data/${1}/gitleaks-new-findings.json" "/reports/${1}-new-findings-report_${the_date}_NO-LEAKS.xlsx"
       echo "[INFO] Leaks are present"
-      convert_to_excel "/data/${1}/gitleaks-new-findings.json" "/data/${1}/new-findings-report_${the_date}.xlsx" 
+      convert_to_excel "/data/${1}/gitleaks-new-findings.json" "/reports/${1}-new-findings-report_${the_date}.xlsx" 
     fi
 
     gitleaks git --report-path /data/${1}/gitleaks-report.json # make a new baseline for the next time around

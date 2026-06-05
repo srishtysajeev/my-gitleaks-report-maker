@@ -6,18 +6,15 @@
 
 REPOS=(
      "https://github.com/srishtysajeev/pato-backend.git"
-     "https://github.com/DiamondLightSource/SynchWeb.git"
+     #"https://github.com/DiamondLightSource/SynchWeb.git"
      #"https://$GITHUB_PAT@github.com/srishtysajeev/test_secret_repo.git"
 )
 
-# TODO: Make the above a cron job
-# eventually you want to make the below a cron job !
-
-#TODO: NOWWW need to rename these files!!
 # source the functions from the other bash files: 
 . /apps/run-gitleaks-and-create-report.sh
 . /apps/create-dir-and-pull.sh
 
+mkdir /data
 for repo in ${REPOS[@]}; do
 
     echo "[INFO] Scanning repo $repo"

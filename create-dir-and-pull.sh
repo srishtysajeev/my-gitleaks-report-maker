@@ -34,3 +34,12 @@ pull-existing-repo(){
 
     git pull origin
 }
+
+
+# REDO THE ABOVE - you don't need the two options even because - actually keep the $2 it will be good to have the data separated by repo name so that your jsons can go in them
+
+# make dir from the date and echo the date
+
+# clone repos (this is currently done in the other script) and put in a tmp folder
+
+# run gitleaks on all of the repos (probably one by one deleting the new ones as you go)
