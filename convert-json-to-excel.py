@@ -33,40 +33,63 @@ df.to_excel(excel_name, index=False)
 wb = load_workbook(excel_name)
 ws = wb.active
 
-# TODO:
-# What if new fields are added in gitleaks?
-# You should add a bit to automatically find the next empty column
-# Add extra header fields 
+# --- AUTO‑DETECT NEXT EMPTY COLUMN ---
+# Find the first empty column in row 1
+col = 1
+while ws.cell(row=1, column=col).value not in (None, ""):
+    col += 1
 
-ws["T1"] = "Leak Classification"
-ws["U1"] = "Impact Assessment"
-ws["V1"] = "Developer Comments"
-ws["W1"] = "Mitigation Status"
-ws["X1"] = "Security Team Comments"
+start_col = col  # first free column
 
-# Dropdown definitions 
-dv_q = DataValidation(type="list",
-                      formula1='"Genuine,False Positive,Test,Other"',
-                      allow_blank=True)
+# Extra headers to add
+extra_headers = [
+    "Leak Classification",
+    "Impact Assessment",
+    "Developer Comments",
+    "Mitigation Status",
+    "Security Team Comments"
+]
 
-dv_r = DataValidation(type="list",
-                      formula1='"Critical,Medium,Low,Informational"',
-                      allow_blank=True)
+# Write headers dynamically
+for i, header in enumerate(extra_headers):
+    ws.cell(row=1, column=start_col + i, value=header)
 
-dv_t = DataValidation(type="list",
-                      formula1='"Action Taken,Not Applicable,Pending,Completed"',
-                      allow_blank=True)
+# Map header names to their column letters
+from openpyxl.utils import get_column_letter
+col_letters = {
+    header: get_column_letter(start_col + i)
+    for i, header in enumerate(extra_headers)
+}
 
-ws.add_data_validation(dv_q)
-ws.add_data_validation(dv_r)
-ws.add_data_validation(dv_t)
+# --- DROPDOWN DEFINITIONS ---
+dv_class = DataValidation(
+    type="list",
+    formula1='"Genuine,False Positive,Test,Other"',
+    allow_blank=True
+)
 
-# Apply dropdowns only if rows exist 
+dv_impact = DataValidation(
+    type="list",
+    formula1='"Critical,Medium,Low,Informational"',
+    allow_blank=True
+)
+
+dv_mitig = DataValidation(
+    type="list",
+    formula1='"Action Taken,Not Applicable,Pending,Completed"',
+    allow_blank=True
+)
+
+ws.add_data_validation(dv_class)
+ws.add_data_validation(dv_impact)
+ws.add_data_validation(dv_mitig)
+
+# Apply dropdowns only if rows exist
 max_row = ws.max_row
 if max_row > 1:
-    dv_q.add(f"Q2:Q{max_row}")
-    dv_r.add(f"R2:R{max_row}")
-    dv_t.add(f"T2:T{max_row}")
+    dv_class.add(f"{col_letters['Leak Classification']}2:{col_letters['Leak Classification']}{max_row}")
+    dv_impact.add(f"{col_letters['Impact Assessment']}2:{col_letters['Impact Assessment']}{max_row}")
+    dv_mitig.add(f"{col_letters['Mitigation Status']}2:{col_letters['Mitigation Status']}{max_row}")
 
 # Save final file
 wb.save(excel_name)
