@@ -2,15 +2,8 @@
 
 # This is the final wrapper script
 
-# TODO: Change this so that the repos are taken from the .txt file 
-
-REPOS=(
-     "https://github.com/srishtysajeev/pato-backend.git"
-     #"https://github.com/DiamondLightSource/SynchWeb.git"
-     #"https://$GITHUB_PAT@github.com/srishtysajeev/test_secret_repo.git"
-)
-
 # source the functions from the other bash files: 
+. /apps/extract-dls-repos.sh
 . /apps/run-gitleaks-and-create-report.sh
 . /apps/create-dir-and-pull.sh
 

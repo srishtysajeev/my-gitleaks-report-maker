@@ -1,8 +1,5 @@
 FROM python:3.11-slim
 
-# Install jq for json commands
-
-
 # Install gitleaks
 RUN apt-get update && apt-get install -y wget git \
     && wget https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz\
@@ -10,7 +7,11 @@ RUN apt-get update && apt-get install -y wget git \
     && mv gitleaks /usr/local/bin/gitleaks \
     && chmod +x /usr/local/bin/gitleaks \
 # Install jq
-    && apt-get install -y jq && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y jq \
+    && apt-get install -y curl \
+    && rm -rf /var/lib/apt/lists/* \
+    
+
 
 # Copy your scripts
 WORKDIR /apps
