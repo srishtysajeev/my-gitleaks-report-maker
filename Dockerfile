@@ -9,17 +9,17 @@ RUN apt-get update && apt-get install -y wget git \
 # Install jq
     && apt-get install -y jq \
     && apt-get install -y curl \
-    && rm -rf /var/lib/apt/lists/* \
-    
+    && rm -rf /var/lib/apt/lists/*
 
+# Install Python dependencies
+RUN pip install pandas openpyxl
 
 # Copy your scripts
 WORKDIR /apps
 
 COPY . .
 
-# Install Python dependencies
-RUN pip install pandas openpyxl
+
 RUN echo "Hello Srishty!"
 RUN ls 
 RUN chmod +x app.sh 

@@ -9,8 +9,6 @@ convert_to_excel(){
 
 the_date=$(date '+%d-%m-%Y')
 
-# TODO: currently your script just gets rid of the old json files - but wajid wants you to keep a record of them
-
 
 # The repo name should be passed in as an argument
 run_gitleaks(){
@@ -27,11 +25,11 @@ run_gitleaks(){
     
     # condition if there are no leaks 
     if [ "$(jq length /data/${1}/gitleaks-report.json)" == 0 ]; then
-      echo "[INFO] Entering 0 length json zone"
-      convert_to_excel "/data/${1}/gitleaks-report.json" "/reports/${1}-report_${the_date}_NO-LEAKS.xlsx" #TODO: keeping date in file name for testing for now but take it out later
+      echo "[INFO] NO LEAKS PRESENT"
+      # convert_to_excel "/data/${1}/gitleaks-report.json" "/reports/${1}-report_${the_date}_NO-LEAKS.xlsx" #TODO: keeping date in file name for testing for now but take it out later
     else
-      echo "[INFO] Leaks are present"
-      convert_to_excel "/data/${1}/gitleaks-report.json" "/reports/${1}-report_${the_date}_potential_leaks.xlsx" 
+      echo "[INFO] Potential Leaks Found"
+      convert_to_excel "/data/${1}/gitleaks-report.json" "/reports/${2}/${1}-report_${the_date}_potential_leaks.xlsx" 
     fi
 
   # If the report already exists
@@ -42,10 +40,12 @@ run_gitleaks(){
     
     # If there are no NEW leaks - reflect in the file name
     if [ "$(jq length /data/${1}/gitleaks-new-findings.json)" -eq 0 ]; then
-      echo "[INFO] Entering 0 length json zone"
-      convert_to_excel "/data/${1}/gitleaks-new-findings.json" "/reports/${1}-new-findings-report_${the_date}_NO-LEAKS.xlsx"
-      echo "[INFO] Leaks are present"
-      convert_to_excel "/data/${1}/gitleaks-new-findings.json" "/reports/${1}-new-findings-report_${the_date}.xlsx" 
+      echo "[INFO] NO LEAKS PRESENT"
+      #convert_to_excel "/data/${1}/gitleaks-new-findings.json" "/reports/${1}-new-findings-report_${the_date}_NO-LEAKS.xlsx"
+
+    else
+      echo "[INFO] Potential Leaks Found"
+      convert_to_excel "/data/${1}/gitleaks-new-findings.json" "/reports/${2}/${1}-new-findings-report_${the_date}.xlsx" 
     fi
 
     gitleaks git --report-path /data/${1}/gitleaks-report.json # make a new baseline for the next time around

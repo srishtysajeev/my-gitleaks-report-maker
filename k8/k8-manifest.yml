@@ -32,16 +32,32 @@ spec:
         env:
         - name: TERM
           value: xterm
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: mysecret
+              key: TOKEN
+      restartPolicy: Never
+
+
 
         volumeMounts:
-        - name: dls-tmp
+        - name: dls-tmp-reports
           mountPath: /reports
+          mountPropagation: HostToContainer
+
+        - name: dls-tmp-data
+          mountPath: /data
           mountPropagation: HostToContainer
 
       restartPolicy: Never
 
       volumes:
-      - name: dls-tmp
+      - name: dls-tmp-reports
         hostPath:
-          path: /dls/tmp/zsw36318
+          path: /dls/tmp/zsw36318/reports
+          type: Directory
+      - name: dls-tmp-data
+        hostPath:
+          path: /dls/tmp/zsw36318/data
           type: Directory
