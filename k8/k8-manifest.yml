@@ -15,6 +15,9 @@ metadata:
   labels:
     app: gitleaks-report
 spec:
+  syncPolicy:
+    syncOptions:
+    - Replace=true
   template:
     spec:
       securityContext:
