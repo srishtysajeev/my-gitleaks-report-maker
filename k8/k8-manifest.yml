@@ -21,11 +21,12 @@ spec:
         runAsUser: 1229500
         runAsGroup: 1229500
 
+      restartPolicy: Never
+
       containers:
       - name: gitleaks-report
         image: ghcr.io/srishtysajeev/gitleaks-reports:latest
 
-        # Run your script or entrypoint here
         command: ["bash", "-c", "./app.sh"]
         args: ["-c", "echo 'Running gitleaks report...'"]
 
@@ -37,9 +38,6 @@ spec:
             secretKeyRef:
               name: mysecret
               key: TOKEN
-      restartPolicy: Never
-
-
 
         volumeMounts:
         - name: dls-tmp-reports
@@ -50,13 +48,12 @@ spec:
           mountPath: /data
           mountPropagation: HostToContainer
 
-      restartPolicy: Never
-
       volumes:
       - name: dls-tmp-reports
         hostPath:
           path: /dls/tmp/zsw36318/reports
           type: Directory
+
       - name: dls-tmp-data
         hostPath:
           path: /dls/tmp/zsw36318/data
